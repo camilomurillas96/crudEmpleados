@@ -1,0 +1,16 @@
+.acciones {
+    flex-direction: row-reverse;
+    text-align: center;
+}
+
+.inputs{
+    padding: 5px 0px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.card-header{
+    background-color: darkseagreen !important;
+    font-size: 20px;
+    font-weight: 500;
+}
