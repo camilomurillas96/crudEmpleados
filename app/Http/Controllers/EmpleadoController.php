@@ -71,7 +71,7 @@ class EmpleadoController extends Controller
             'nombre' => 'required|string',
             'email' => 'required|email:dns',
             'sexo' => 'required',
-            'area_id' => 'required',
+            'area' => 'required',
             'descripcion' => 'required',
             'rol' => 'required'
 
@@ -82,7 +82,7 @@ class EmpleadoController extends Controller
             'email.required' => 'El correo electrónico es requerido',
             'email' => 'El correo electrónico debe ser valido',
             'sexo.required' => 'El sexo es requerido',
-            'area_id.required' => 'El area es requerida',
+            'area.required' => 'El area es requerida',
             'descripcion.required' => 'La descripción es requerida',
             'rol.required' => 'El rol es requerido'
         ];
@@ -160,7 +160,7 @@ class EmpleadoController extends Controller
             'nombre' => 'required|string',
             'email' => 'required|email:dns',
             'sexo' => 'required',
-            'area_id' => 'required',
+            'area' => 'required',
             'descripcion' => 'required',
             'rol' => 'required'
 
@@ -171,12 +171,12 @@ class EmpleadoController extends Controller
             'email.required' => 'El correo electrónico es requerido',
             'email' => 'El correo electrónico debe ser valido',
             'sexo.required' => 'El sexo es requerido',
-            'area_id.required' => 'El area es requerida',
+            'area.required' => 'El area es requerida',
             'descripcion.required' => 'La descripción es requerida',
             'rol.required' => 'El rol es requerido'
         ];
 
-        // $this->validate($request,$campos,$mensaje);
+        $this->validate($request,$campos,$mensaje);
         
         try{
             Empleado::where('id','=',intval($id))->update(array(
@@ -187,17 +187,23 @@ class EmpleadoController extends Controller
                 'descripcion' => $desc,
                 'boletin' => $boletin
                 )
-            );
-
-            foreach ($rol as $key => $value) {
-                # code...
-                Empleado_Rol::where('empleado_id','=',intval($id))->update(array(
-                    'rol_id' => $value
-                    )
-                );
-            }
+            );            
         }catch (QueryException $ex){
             return back()->with('error', 'Ocurrio un error, intente nuevamente.');
+        }
+
+        try{
+
+            DB::table('empleado_rol')->where('empleado_id', $id)->delete();
+            foreach ($rol as $value) {
+                # code...
+                $empleado_rol = new Empleado_Rol();
+                $empleado_rol->empleado_id = $id;
+                $empleado_rol->rol_id = $value;
+                $empleado_rol->save();
+            }
+        }catch(QueryException $ex){
+            return $ex;
         }
         
 

@@ -24,7 +24,7 @@
 
 <div class="form-group row inputs @error('sexo') is-invalid @enderror">
     <label for="sexo" class="col-md-4 col-form-label text-md-right">{{ __('Sexo *') }}</label>
-    @if($empleado->sexo == "M")
+        @if(isset($empleado) && $empleado->sexo == "M")
         <div class="col-md-6">
             <div class="form-check">
                 <input class="col-md-4 form-check-input" type="radio" value="M" name="sexo" checked id="sexo1">
@@ -37,34 +37,30 @@
                 <label class="col-md-4 form-check-label" for="sexo2">
                 Femenino
                 </label>
-            </div>
-            @error('sexo')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
+            </div>            
         </div>
-    @else
-        <div class="col-md-6">
-            <div class="form-check">
-                <input class="col-md-4 form-check-input" type="radio" value="M" name="sexo" id="sexo1">
-                <label class="col-md-4 form-check-label" for="sexo1">
-                Masculino
-                </label>
+        @else
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input class="col-md-4 form-check-input" type="radio" value="M" name="sexo" id="sexo1">
+                    <label class="col-md-4 form-check-label" for="sexo1">
+                    Masculino
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="col-md-4 form-check-input" type="radio" value="F" name="sexo" id="sexo2" checked>
+                    <label class="col-md-4 form-check-label" for="sexo2">
+                    Femenino
+                    </label>
+                </div>
             </div>
-            <div class="form-check">
-                <input class="col-md-4 form-check-input" type="radio" value="F" name="sexo" id="sexo2" checked>
-                <label class="col-md-4 form-check-label" for="sexo2">
-                Femenino
-                </label>
-            </div>
-            @error('sexo')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-        </div>
-    @endif
+        @endif
+    
+    @error('sexo')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
 </div>
 
 <div class="form-group row inputs">
@@ -73,13 +69,12 @@
         <select class="form-control @error('area_id') is-invalid @enderror" id="area" name="area" aria-label=".form-select-lg example">
             {{-- <option value="{{}}">{{($concept->area)?$concept->area:''}}</option> --}}
             <option value="">Seleccione el area</option>
-            @foreach ($areas as $area)
-            @if($area->id == $empleado->area_id)
-                <option value="{{$area->id}}" selected>{{$area->nombre}}</option>
-            @else
-                <option value="{{$area->id}}">{{$area->nombre}}</option>
-            @endif
-                
+            @foreach ($areas as $area)            
+                @if(isset($empleado) && $area->id == $empleado->area_id)
+                    <option value="{{$area->id}}" selected>{{$area->nombre}}</option>
+                @else
+                    <option value="{{$area->id}}">{{$area->nombre}}</option>
+                @endif                           
             @endforeach
         </select>
         @error('area_id')
@@ -108,7 +103,8 @@
     <label for="boletin" class="col-md-4 col-form-label text-md-right"></label>
     <div class="col-md-6">
         <div class="form-check">
-            @if($empleado->boletin == 1)
+            
+            @if(isset($empleado) && $empleado->boletin == 1)
             <input class="form-check-input boletin" checked type="checkbox"  value="">
             <input class="form-check-input boletinSend" type="hidden" name="boletin" value="1">
             @else

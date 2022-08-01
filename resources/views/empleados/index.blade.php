@@ -48,14 +48,16 @@
                                 <td>{{$empleado->area}}</td>
                                 <td>{{$empleado->boletin}}</td>
                                 <td style="display: flex;">
-                                    <a class="btn btn-warning" href="{{ route('empleado.edit',['id'=>$empleado->id],'/edit') }}">
+                                    <a class="btn btn-warning" style="margin: 5px;" href="{{ route('empleado.edit',['id'=>$empleado->id],'/edit') }}">
                                         <i class="fas fa-pen"></i>
                                     </a>
                                     
                                     <form action="{{ route('empleado.destroy',['id'=>$empleado->id]) }}" method="post">
                                         @csrf
                                         {{method_field('DELETE')}}
-                                        <input class="btn btn-danger" type="submit" onclick="return confirm('¿Quieres borrar este registro?')" value="Eliminar">
+                                        <button class="btn btn-danger" style="margin: 5px;" type="submit" onclick="confirm('¿Quieres borrar este registro?')">
+                                            <i class="fas fa-trash-alt"></i></button>
+                                        {{-- <input class="btn btn-danger" type="submit" onclick="return confirm('¿Quieres borrar este registro?')" value="Eliminar"> --}}
                                     </form>                    
                                 </td>
                             </tr>
